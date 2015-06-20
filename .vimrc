@@ -4,6 +4,8 @@ set spelllang=en,cjk  "out japanese with set spell
 let g:molokai_original = 1
 let g:rehash256 = 1
 
+inoremap <silent> <Esc> <Esc>`^
+set showmode
 
 "構文カラー
 syntax enable
@@ -60,6 +62,8 @@ NeoBundle 'pekepeke/ref-javadoc'
 NeoBundle 'mattn/webapi-vim'
 NeoBundle 'vitalk/vim-simple-todo'
 NeoBundle '5t111111/alt-gtags.vim'
+NeoBundle 'kazuminn/latex_template.vim'
+
 " NeoBundle 'thinca/vim-quickrun' setting
 let g:quickrun_config={'*':{'split':''}}
 set splitbelow
@@ -80,4 +84,5 @@ nnoremap q :QuickRun<cr>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
+set secure
 
