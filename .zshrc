@@ -44,3 +44,4 @@ cat AAA.vim
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
 
+export TERM=xterm-256color
