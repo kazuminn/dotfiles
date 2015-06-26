@@ -10,6 +10,27 @@ set showmode
 syntax enable
 
 
+"for Ruby
+augroup Ruby
+  autocmd!
+  autocmd FileType ruby  setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+augroup END
+
+"for Python
+augroup Python
+  autocmd!
+  autocmd FileType python setl tabstop=4 softtabstop=4 shiftwidth=4  expandtab
+  autocmd FileType python setl smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
+augroup END
+
+"for Vim Script
+augroup Python
+  autocmd!
+  autocmd FileType vim setl tabstop=2 softtabstop=2 shiftwidth=2  expandtab
+augroup END
+
+
+
 
 "ステータスカラー
 highlight statusline term=NONE cterm=NONE guifg=red ctermfg=yellow ctermbg=red
