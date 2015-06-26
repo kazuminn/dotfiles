@@ -96,29 +96,29 @@ NeoBundle 'Shougo/vimproc.vim', {
 \ }
 
 
-  
-  " NeoBundle 'thinca/vim-quickrun' setting
-  let g:quickrun_config={'*':{'split':''}}
-  set splitbelow
-  
-  
-  
-  "NeoBundle quickrun setting
-  set splitbelow
+ 
+" NeoBundle 'thinca/vim-quickrun' setting
+let g:quickrun_config={'*':{'split':''}}
+set splitbelow
   
   
   
+"NeoBundle quickrun setting
+set splitbelow
   
-  "NeoBundle undotree setting
-  if has('persistent_undo')
-  let &undodir = expand('~/.vim/undo_history')
-  set undofile
-  endif
+  
+  
+  
+"NeoBundle undotree setting
+if has('persistent_undo')
+let &undodir = expand('~/.vim/undo_history')
+set undofile
+endif
 
 
-  "NERDTree setting
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"NERDTree setting
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
   
 
 
