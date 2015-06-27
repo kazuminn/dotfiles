@@ -1,3 +1,7 @@
+#gopath
+export GOPATH=$HOME/go
+export PATH="/Users/kinoshita/go/bin:$PATH"
+
 #rbenv 
 if which rbenv >& /dev/null; then 
 	eval "$(rbenv init - )"; 
