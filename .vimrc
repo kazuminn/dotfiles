@@ -10,10 +10,16 @@ set showmode
 syntax enable
 
 
+"for All
+augroup Myvimrc
+  autocmd!
+augroup END
+
 "for Golang
 augroup Golang
   au BufNewFile,BufRead *.go set noexpandtab tabstop=4 shiftwidth=4
 augroup END
+
 "for Ruby
 augroup Ruby
   autocmd!
