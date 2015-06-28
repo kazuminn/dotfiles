@@ -134,7 +134,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 \     'unix' : 'gmake',
 \    },
 \ }
-NeoBundle 'heavenshell/vim-slack'
+NeoBundle 'agatan/vim-vlack'
 
 
  
@@ -165,6 +165,9 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let twitvim_force_ssl = 1 
 let twitvim_count = 40
 
+
+"slack
+let g:slaq_token = "token"
 
 "##############################################################################
 " mapping
