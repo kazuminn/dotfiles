@@ -9,7 +9,7 @@ set showmode
 "構文カラー
 syntax enable
 
-
+"
 "for All
 augroup Myvimrc
   autocmd!
@@ -89,9 +89,16 @@ filetype plugin indent on " Required!
   
   
   "NeoBundle plugin install
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'basyura/twibill.vim'
+NeoBundle 'tyru/open-browser.vim'
+NeoBundle 'h1mesuke/unite-outline'
+NeoBundle 'basyura/bitly.vim'
+NeoBundle 'Shougo/unite.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'basyura/twibill.vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'mbbill/undotree'
 NeoBundle 'scrooloose/nerdtree'
@@ -117,6 +124,7 @@ NeoBundle 'mattn/webapi-vim'
 NeoBundle 'vitalk/vim-simple-todo'
 NeoBundle '5t111111/alt-gtags.vim'
 NeoBundle 'kazuminn/latex_template.vim'
+NeoBundle 'TwitVim'
 NeoBundle 'Shougo/vimproc.vim', {
 \ 'build' : {
 \     'windows' : 'tools\\update-dll-mingw',
@@ -126,6 +134,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 \     'unix' : 'gmake',
 \    },
 \ }
+NeoBundle 'heavenshell/vim-slack'
 
 
  
@@ -152,6 +161,9 @@ endif
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
   
+"twitter
+let twitvim_force_ssl = 1 
+let twitvim_count = 40
 
 
 "##############################################################################
