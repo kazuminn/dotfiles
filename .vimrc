@@ -3,13 +3,22 @@ set spell "check spell
 set spelllang=en,cjk  "out japanese with set spell
 let g:rehash256 = 1
 
+"aモードの時に、カーソルを戻さない
 inoremap <silent> <Esc> <Esc>`^
 set showmode
 
 "構文カラー
 syntax enable
 
-"
+"undotree setting
+if has('persistent_undo')
+let &undodir = expand('~/.vim/undo_history')
+set undofile
+endif
+
+
+"---------------------------------------------------------------------------------
+"augroup {{{
 "for All
 augroup Myvimrc
   autocmd!
@@ -39,7 +48,7 @@ augroup Vim
   autocmd!
   autocmd FileType vim setl tabstop=2 softtabstop=2 shiftwidth=2  expandtab
 augroup END
-
+" }}}
 
 
 
@@ -87,10 +96,9 @@ filetype plugin indent on " Required!
   
   
   
-  
-  "NeoBundle plugin install
+"-----------------------------------------------------------------------------
+"Instaled NeoBundle Plugin {{{
 NeoBundle 'mattn/webapi-vim'
-NeoBundle 'basyura/twibill.vim'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'h1mesuke/unite-outline'
 NeoBundle 'basyura/bitly.vim'
@@ -98,19 +106,9 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'Yggdroot/indentLine'
-NeoBundle 'basyura/twibill.vim'
-NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'mbbill/undotree'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'Shougo/vimproc', {
-\ 'build' : {
-\ 'windows' : 'make -f make_mingw32.mak',
-\ 'cygwin' : 'make -f make_cygwin.mak',
-\ 'mac' : 'make -f make_mac.mak',
-\ 'unix' : 'make -f make_unix.mak',
-\ },
-\ }
 NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'terryma/vim-multiple-cursors'
@@ -125,7 +123,15 @@ NeoBundle 'vitalk/vim-simple-todo'
 NeoBundle '5t111111/alt-gtags.vim'
 NeoBundle 'kazuminn/latex_template.vim'
 NeoBundle 'TwitVim'
-NeoBundle 'Shougo/vimproc.vim', {
+NeoBundle 'agatan/vim-vlack'
+
+NeoBundleLazy 'basyura/twibill.vim',{
+\ 'autoload' : {
+\     'commands' : [ "FriendsTwitter" ]
+\    },
+\ }
+
+NeoBundleLazy 'Shougo/vimproc.vim', {
 \ 'build' : {
 \     'windows' : 'tools\\update-dll-mingw',
 \     'cygwin' : 'make -f make_cygwin.mak',
@@ -134,46 +140,59 @@ NeoBundle 'Shougo/vimproc.vim', {
 \     'unix' : 'gmake',
 \    },
 \ }
-NeoBundle 'agatan/vim-vlack'
 
+NeoBundleLazy 'thinca/vim-quickrun',{
+\ 'autoload' : {
+\     'commands' : [ "QuickRun" ]
+\    },
+\ }
+" }}}
 
  
-" NeoBundle 'thinca/vim-quickrun' setting
-let g:quickrun_config={'*':{'split':''}}
-set splitbelow
-  
-  
-  
-"NeoBundle quickrun setting
-set splitbelow
-  
-  
-  
-  
-"NeoBundle undotree setting
-if has('persistent_undo')
-let &undodir = expand('~/.vim/undo_history')
-set undofile
-endif
+" ------------------------------------------------------------------------------------
+"  NeoBundle setting{{{
 
+" NeoBundle 'thinca/vim-quickrun' setting
+let s:bundle = neobundle#get("vim-quickrun")
+function! s:bundle.hooks.on_source(bundle)
+  let g:quickrun_config={'*':{'split':''}}
+  set splitbelow
+endfunction
+unlet s:bundle
+  
+  
 
 "NERDTree setting
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-  
+
+
 "twitter
-let twitvim_force_ssl = 1 
-let twitvim_count = 40
+let s:bundle = neobundle#get("twibill.vim")
+function! s:bundle.hooks.on_source(bundle)
+  let twitvim_force_ssl = 1 
+  let twitvim_count = 40
+endfunction
+unlet s:bundle
 
 
-"slack
-let g:slaq_token = "token"
+"slack setting and token switch
+let s:bundle = neobundle#get("vim-vlack")
+function! s:bundle.hooks.on_source(bundle)
+  if exists('g:switch')
+    let g:slaq_token = "token" "vim-jp
+  else
+    let g:slaq_token = "token" "ie
+  endif
+endfunction
 
-"##############################################################################
-" mapping
-"##############################################################################
+"}}}
+
+
+"-----------------------------------------------------------------------------
+"maping{{{
   nnoremap q :QuickRun<cr>
-
+"}}}
 
 
 
