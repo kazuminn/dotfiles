@@ -123,6 +123,8 @@ NeoBundle 'vitalk/vim-simple-todo'
 NeoBundle '5t111111/alt-gtags.vim'
 NeoBundle 'kazuminn/latex_template.vim'
 NeoBundle 'agatan/vim-vlack'
+NeoBundle 'mattn/vim-metarw-redmine'
+NeoBundle 'kana/vim-metarw'
 
 
 NeoBundleLazy 'Shougo/vimproc.vim', {
@@ -137,7 +139,7 @@ NeoBundleLazy 'Shougo/vimproc.vim', {
 
 NeoBundleLazy 'vim-scripts/TwitVim',{
 \ 'autoload' : {
-\     'commands' : [ "FriendsTwitter","RepliesTwitter" ]
+\     'commands' : [ "FriendsTwitter","RepliesTwitter","PosttoTwitter" ]
 \    },
 \ }
 
@@ -186,6 +188,9 @@ function! s:bundle.hooks.on_source(bundle)
   endif
 endfunction
 
+"redmine config
+let g:metarw_redmine_server = 'site'
+let g:metarw_redmine_apikey = 'key'
 "}}}
 
 
@@ -195,6 +200,7 @@ endfunction
   nmap gx <Plug>(openbrowser-smart-search) "url上でgxを押すとブラウザで展開
   nmap R <Leader>r
 "}}}
+
 
 
 
