@@ -122,14 +122,8 @@ NeoBundle 'mattn/webapi-vim'
 NeoBundle 'vitalk/vim-simple-todo'
 NeoBundle '5t111111/alt-gtags.vim'
 NeoBundle 'kazuminn/latex_template.vim'
-NeoBundle 'TwitVim'
 NeoBundle 'agatan/vim-vlack'
 
-NeoBundleLazy 'basyura/twibill.vim',{
-\ 'autoload' : {
-\     'commands' : [ "FriendsTwitter" ]
-\    },
-\ }
 
 NeoBundleLazy 'Shougo/vimproc.vim', {
 \ 'build' : {
@@ -138,6 +132,12 @@ NeoBundleLazy 'Shougo/vimproc.vim', {
 \     'mac' : 'make -f make_mac.mak',
 \     'linux' : 'make',
 \     'unix' : 'gmake',
+\    },
+\ }
+
+NeoBundleLazy 'vim-scripts/TwitVim',{
+\ 'autoload' : {
+\     'commands' : [ "FriendsTwitter" ]
 \    },
 \ }
 
@@ -168,7 +168,7 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 
 "twitter
-let s:bundle = neobundle#get("twibill.vim")
+let s:bundle = neobundle#get("TwitVim")
 function! s:bundle.hooks.on_source(bundle)
   let twitvim_force_ssl = 1 
   let twitvim_count = 40
@@ -191,7 +191,8 @@ endfunction
 
 "-----------------------------------------------------------------------------
 "maping{{{
-  nnoremap q :QuickRun<cr>
+  nnoremap q :QuickRun<cr> "qでquickrun
+  nmap gx <Plug>(openbrowser-smart-search) "url上でgxを押すとブラウザで展開
 "}}}
 
 
