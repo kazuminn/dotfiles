@@ -137,7 +137,7 @@ NeoBundleLazy 'Shougo/vimproc.vim', {
 
 NeoBundleLazy 'vim-scripts/TwitVim',{
 \ 'autoload' : {
-\     'commands' : [ "FriendsTwitter" ]
+\     'commands' : [ "FriendsTwitter","RepliesTwitter" ]
 \    },
 \ }
 
@@ -193,6 +193,7 @@ endfunction
 "maping{{{
   nnoremap q :QuickRun<cr> "qでquickrun
   nmap gx <Plug>(openbrowser-smart-search) "url上でgxを押すとブラウザで展開
+  nmap R <Leader>r
 "}}}
 
 
