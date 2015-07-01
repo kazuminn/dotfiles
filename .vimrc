@@ -46,7 +46,7 @@ augroup END
 "for Vim Script
 augroup Vim 
   autocmd!
-  autocmd FileType vim setl tabstop=2 softtabstop=2 shiftwidth=2  expandtab
+  autocmd FileType vim setl tabstop=4 softtabstop=4 shiftwidth=4  expandtab
 augroup END
 " }}}
 
@@ -148,6 +148,12 @@ NeoBundleLazy 'thinca/vim-quickrun',{
 \     'commands' : [ "QuickRun" ]
 \    },
 \ }
+
+NeoBundle 'Shougo/vimshell.vim',{
+\ 'autoload' : {
+\     'commands' : [ "VimShell" ]
+\    },
+\ }
 " }}}
 
  
@@ -179,14 +185,8 @@ unlet s:bundle
 
 
 "slack setting and token switch
-let s:bundle = neobundle#get("vim-vlack")
-function! s:bundle.hooks.on_source(bundle)
-  if exists('g:switch')
-    let g:slaq_token = "token" "vim-jp
-  else
-    let g:slaq_token = "token" "ie
-  endif
-endfunction
+let g:slaq_token = "token" "vim-jp
+
 
 "redmine config
 let g:metarw_redmine_server = 'site'
@@ -197,6 +197,7 @@ let g:metarw_redmine_apikey = 'key'
 "-----------------------------------------------------------------------------
 "maping{{{
   nnoremap q :QuickRun<cr> "qでquickrun
+
   nmap gx <Plug>(openbrowser-smart-search) "url上でgxを押すとブラウザで展開
   nmap R <Leader>r
 "}}}
