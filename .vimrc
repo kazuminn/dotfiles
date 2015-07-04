@@ -17,8 +17,19 @@ set undofile
 endif
 
 
+
 "---------------------------------------------------------------------------------
 "augroup {{{
+
+augroup vimrc-auto-mkdir  "ディレクトリがないときに自動でディレクトリを作成してくれる
+  autocmd!
+  autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'))
+  function! s:auto_mkdir(dir)  
+    if !isdirectory(a:dir)
+      call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
+    endif
+  endfunction  
+augroup END  
 
 augroup MyVimrc
   autocmd QuickFixCmdPost [^l]*  cwindow "[^l]* とすると、l 以外の文字で始まる任意のコマンドを実行
@@ -80,12 +91,11 @@ filetype plugin indent on
 let g:neocomplete#enable_at_startup = 1
 
   " Installation check.
-"if neobundle#exists_not_installed_bundles()
-"echomsg 'Not installed bundles : ' .
-"\ string(neobundle#get_not_installed_bundle_names())
-"echomsg 'Please execute ":NeoBundleInstall" command.'
-"finish
-"endif
+let s:has_neobundle = isdirectory($HOME . '/.vim/bundle/neobundle.vim')
+let s:need_neobundle = 1 "neobundleをinstallする必要があるときは1、そうじゃないと0
+if !s:has_neobundle && s:need_neobundle
+    echo "execute :NeoBundleInstall"
+endif
 
 "NeoBundle setting
 set nocompatible " Be iMproved
