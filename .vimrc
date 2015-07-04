@@ -19,6 +19,12 @@ endif
 
 "---------------------------------------------------------------------------------
 "augroup {{{
+
+augroup MyVimrc
+  autocmd QuickFixCmdPost [^l]*  cwindow "[^l]* とすると、l 以外の文字で始まる任意のコマンドを実行
+  autocmd QuickFixCmdPost l*  lwindow
+augroup END
+
 "for All
 augroup Myvimrc
   autocmd!
@@ -191,6 +197,9 @@ let g:slaq_token = "token" "vim-jp
 "redmine config
 let g:metarw_redmine_server = 'site'
 let g:metarw_redmine_apikey = 'key'
+
+"VimShell 
+let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 "}}}
 
 
