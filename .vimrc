@@ -24,12 +24,12 @@ endif
 augroup vimrc-auto-mkdir  "ディレクトリがないときに自動でディレクトリを作成してくれる
   autocmd!
   autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'))
-  function! s:auto_mkdir(dir)  
+  function! s:auto_mkdir(dir)
     if !isdirectory(a:dir)
       call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
     endif
-  endfunction  
-augroup END  
+  endfunction
+augroup END
 
 augroup MyVimrc
   autocmd QuickFixCmdPost [^l]*  cwindow "[^l]* とすると、l 以外の文字で始まる任意のコマンドを実行
@@ -37,8 +37,9 @@ augroup MyVimrc
 augroup END
 
 "for All
-augroup Myvimrc
+augroup ALL
   autocmd!
+  autocmd FileType c  setl tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 augroup END
 
 "for Golang
@@ -61,7 +62,7 @@ augroup Python
 augroup END
 
 "for Vim Script
-augroup Vim 
+augroup Vim
   autocmd!
   autocmd FileType vim setl tabstop=4 softtabstop=4 shiftwidth=4  expandtab
 augroup END
@@ -109,11 +110,12 @@ endif
 call neobundle#rc(expand('~/.vim/bundle/'))
 
 filetype plugin indent on " Required!
-  
-  
-  
+
+
+
 "-----------------------------------------------------------------------------
 "Instaled NeoBundle Plugin {{{
+NeoBundle 'rking/ag.vim'
 NeoBundle 'mattn/webapi-vim'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'h1mesuke/unite-outline'
@@ -141,6 +143,16 @@ NeoBundle 'kazuminn/latex_template.vim'
 NeoBundle 'agatan/vim-vlack'
 NeoBundle 'mattn/vim-metarw-redmine'
 NeoBundle 'kana/vim-metarw'
+NeoBundle 'kazuminn/gunosy.vim'
+NeoBundle 'haya14busa/incsearch-fuzzy.vim'
+NeoBundle 'haya14busa/incsearch.vim'
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'bronson/vim-trailing-whitespace'
+
+
+
+
 
 
 NeoBundleLazy 'Shougo/vimproc.vim', {
@@ -172,7 +184,7 @@ NeoBundle 'Shougo/vimshell.vim',{
 \ }
 " }}}
 
- 
+
 " ------------------------------------------------------------------------------------
 "  NeoBundle setting{{{
 
@@ -183,8 +195,8 @@ function! s:bundle.hooks.on_source(bundle)
   set splitbelow
 endfunction
 unlet s:bundle
-  
-  
+
+
 
 "NERDTree setting
 autocmd StdinReadPre * let s:std_in=1
@@ -194,7 +206,7 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 "twitter
 let s:bundle = neobundle#get("TwitVim")
 function! s:bundle.hooks.on_source(bundle)
-  let twitvim_force_ssl = 1 
+  let twitvim_force_ssl = 1
   let twitvim_count = 40
 endfunction
 unlet s:bundle
@@ -208,10 +220,42 @@ let g:slaq_token = "token" "vim-jp
 let g:metarw_redmine_server = 'site'
 let g:metarw_redmine_apikey = 'key'
 
-"VimShell 
+"VimShell
 let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
+"
+"
+let g:lightline = {
+\ 'colorscheme': 'default',
+\ }
+set laststatus=2
+"
+"
+"unite
+let g:unite_source_history_yank_enable = 1
+try
+  let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
+  call unite#filters#matcher_default#use(['matcher_fuzzy'])
+catch
+endtry
+" search a file in the filetree
+nnoremap <space><space> :<C-u>Unite -start-insert file_rec/async<cr>
+" reset not it is <C-l> normally
+:nnoremap <space>r <Plug>(unite_restart)
+
+
+"ag
+nmap ° :Ag <c-r>=expand("<cword>")<cr><cr>
+nnoremap <space>/ :Ag
+"
+"
+"vim plugin test http://qiita.com/c0hama/items/4ab505ddebdcfd842e25
+command! -bang -nargs=* PluginTest call PluginTest()
+function! PluginTest()
+  execute '!vim -u NONE -i NONE -N --cmd "set rtp+=' . getcwd() . '"'
+endfunction
 "}}}
 
+"
 
 "-----------------------------------------------------------------------------
 "maping{{{
@@ -219,6 +263,7 @@ let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 
   nmap gx <Plug>(openbrowser-smart-search) "url上でgxを押すとブラウザで展開
   nmap R <Leader>r
+  nmap  z/ <Plug>(incsearch-fuzzy-/)
 "}}}
 
 
