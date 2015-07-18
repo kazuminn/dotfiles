@@ -3,6 +3,8 @@ set spell "check spell
 set spelllang=en,cjk  "out japanese with set spell
 let g:rehash256 = 1
 
+
+set foldlevel=2
 "aモードの時に、カーソルを戻さない
 inoremap <silent> <Esc> <Esc>`^
 set showmode
@@ -16,8 +18,37 @@ let &undodir = expand('~/.vim/undo_history')
 set undofile
 endif
 
+"よくわかんないけどtermialとのconnectionが早くなる
+set ttyfast
 
+"deleteキー
+set bs+=start "insert modeになる前の文字もdeleteキーで消せるようにする。
 
+"カーソル
+if has('xim') || has('multi_byte_ime')
+  highlight CursorIM guifg=Black guibg=Red
+endif
+
+"reopen encodeing file alias
+function! ConvertFileEncode(encoding, ...)
+    exec('setl fileencoding='.a:encoding)
+    exec('setl fileformat='.get(a:, 2, 'unix'))
+endfunction
+
+command! Utf8      call ConvertFileEncode('utf-8')
+command! Cp932     call ConvertFileEncode('cp932')
+command! Sjis      Cp932
+command! Utf16b    call ConvertFileEncode('utf-16')
+command! Utf16l    call ConvertFileEncode('utf-16le')
+command! Iso2022jp call ConvertFileEncode('iso-2022-jp')
+command! Jis       Iso2022jp
+command! Eucjp     call ConvertFileEncode('euc-jp')
+
+"クラッシュした時に大丈夫なように
+if has('unix')
+    set nofsync
+    set swapsync=
+endif
 "---------------------------------------------------------------------------------
 "augroup {{{
 
@@ -125,7 +156,7 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'mbbill/undotree'
-NeoBundle 'scrooloose/nerdtree'
+"NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 'tpope/vim-surround'
@@ -138,7 +169,7 @@ NeoBundle 'ebc-2in2crc/vim-ref-jvmis'
 NeoBundle 'pekepeke/ref-javadoc'
 NeoBundle 'mattn/webapi-vim'
 NeoBundle 'vitalk/vim-simple-todo'
-NeoBundle '5t111111/alt-gtags.vim'
+NeoBundle 'vim-scripts/gtags.vim'
 NeoBundle 'kazuminn/latex_template.vim'
 NeoBundle 'agatan/vim-vlack'
 NeoBundle 'mattn/vim-metarw-redmine'
@@ -149,6 +180,8 @@ NeoBundle 'haya14busa/incsearch.vim'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'bronson/vim-trailing-whitespace'
+NeoBundle 'sjl/gundo.vim'
+
 
 
 
@@ -199,8 +232,8 @@ unlet s:bundle
 
 
 "NERDTree setting
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 
 "twitter
@@ -220,6 +253,7 @@ let g:slaq_token = "token" "vim-jp
 let g:metarw_redmine_server = 'site'
 let g:metarw_redmine_apikey = 'key'
 
+fixdel
 "VimShell
 let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 "
@@ -246,8 +280,8 @@ nnoremap <space><space> :<C-u>Unite -start-insert file_rec/async<cr>
 "ag
 nmap ° :Ag <c-r>=expand("<cword>")<cr><cr>
 nnoremap <space>/ :Ag
-"
-"
+
+
 "vim plugin test http://qiita.com/c0hama/items/4ab505ddebdcfd842e25
 command! -bang -nargs=* PluginTest call PluginTest()
 function! PluginTest()
@@ -264,6 +298,19 @@ endfunction
   nmap gx <Plug>(openbrowser-smart-search) "url上でgxを押すとブラウザで展開
   nmap R <Leader>r
   nmap  z/ <Plug>(incsearch-fuzzy-/)
+  nnoremap sh <C-w>h
+  nnoremap sj <C-w>j
+  nnoremap sk <C-w>k
+  nnoremap sl <C-w>l
+  nnoremap sn <C-w>n
+
+  map <C-g> :Gtags
+  map <C-h> :Gtags -f %<CR> "関数表示
+  map <C-j> :GtagsCursor<CR> "自動的にその関数が定義されている箇所（別ファイルであっても）に移動してくれます。
+  map <C-n> :cn<CR>
+  map <C-p> :cp<CR>
+
+  imap <C-h>  <BS>
 "}}}
 
 
@@ -271,4 +318,4 @@ endfunction
 
 
 set secure
-
+set title
