@@ -4,12 +4,14 @@ set spelllang=en,cjk  "out japanese with set spell
 let g:rehash256 = 1
 
 
+"fold setting
+set foldmethod=marker "{{{がmarker  zj/zkで移動
 set foldlevel=2
 "aモードの時に、カーソルを戻さない
 inoremap <silent> <Esc> <Esc>`^
 set showmode
 
-"構文カラー
+"構文カラー"{{{"}}}
 syntax enable
 
 "undotree setting
@@ -287,6 +289,17 @@ command! -bang -nargs=* PluginTest call PluginTest()
 function! PluginTest()
   execute '!vim -u NONE -i NONE -N --cmd "set rtp+=' . getcwd() . '"'
 endfunction
+"
+"
+"light.vim
+command! -bar LightlineUpdate    call lightline#init()|
+  \ call lightline#colorscheme()|
+  \ call lightline#update()
+
+let g:lightline.component = {}
+let g:lightline.component.dir = '%.35(%{expand("%:h:s?\\S$?\\0/?")}%)'
+let g:lightline.active = {}
+let g:lightline.active.left = [['mode', 'paste'], ['dir'],['readonly', 'filename', 'modified']]
 "}}}
 
 "
