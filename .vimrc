@@ -3,7 +3,7 @@ set spell "check spell
 set spelllang=en,cjk  "out japanese with set spell
 let g:rehash256 = 1
 
-
+set nofixendofline
 "fold setting
 set foldmethod=marker "{{{がmarker  zj/zkで移動
 set foldlevel=2
@@ -183,6 +183,7 @@ NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'bronson/vim-trailing-whitespace'
 NeoBundle 'sjl/gundo.vim'
+NeoBundle 'mattn/gist-vim'
 
 
 
@@ -321,8 +322,9 @@ let g:lightline.active.left = [['mode', 'paste'], ['dir'],['readonly', 'filename
   map <C-h> :Gtags -f %<CR> "関数表示
   map <C-j> :GtagsCursor<CR> "自動的にその関数が定義されている箇所（別ファイルであっても）に移動してくれます。
   map <C-n> :cn<CR>
-  map <C-p> :cp<CR>
-
+  map <C-e> :cp<CR>
+  noremap <C-p> gt
+  noremap <C-n> gT
   imap <C-h>  <BS>
 "}}}
 
