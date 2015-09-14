@@ -3,14 +3,20 @@ set spell "check spell
 set spelllang=en,cjk  "out japanese with set spell
 let g:rehash256 = 1
 
+set mouse=a " enable mouse in all modes
+set incsearch " show matches when typing the search pattern
+
 set nofixendofline
 "fold setting
 set foldmethod=marker "{{{がmarker  zj/zkで移動
 set foldlevel=2
-"aモードの時に、カーソルを戻さない
-inoremap <silent> <Esc> <Esc>`^
-set showmode
 
+" Show invisible characters.
+set list listchars=tab:^\ ,trail:_,extends:>,precedes:<
+"set invlist
+"set list  " show non-normal spaces, tabs etc.
+
+"区切り文字に:を追加
 "構文カラー"{{{"}}}
 syntax enable
 
@@ -184,6 +190,9 @@ NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'bronson/vim-trailing-whitespace'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'mattn/gist-vim'
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neosnippet-snippets'
 
 
 
@@ -301,6 +310,15 @@ let g:lightline.component = {}
 let g:lightline.component.dir = '%.35(%{expand("%:h:s?\\S$?\\0/?")}%)'
 let g:lightline.active = {}
 let g:lightline.active.left = [['mode', 'paste'], ['dir'],['readonly', 'filename', 'modified']]
+"
+"
+"neosnippet.vim setting
+let g:neocomplete#enable_at_startup = 1
+"
+" 自分用 snippet ファイルの場所
+let s:my_snippet = '~/dotfiles/snippet/'
+let g:neosnippet#snippets_directory = s:my_snippet
+
 "}}}
 
 "
@@ -309,7 +327,7 @@ let g:lightline.active.left = [['mode', 'paste'], ['dir'],['readonly', 'filename
 "maping{{{
   nnoremap q :QuickRun<cr> "qでquickrun
 
-  nmap gx <Plug>(openbrowser-smart-search) "url上でgxを押すとブラウザで展開
+  nmap gz <Plug>(openbrowser-smart-search) "url上でgxを押すとブラウザで展開
   nmap R <Leader>r
   nmap  z/ <Plug>(incsearch-fuzzy-/)
   nnoremap sh <C-w>h
@@ -326,11 +344,19 @@ let g:lightline.active.left = [['mode', 'paste'], ['dir'],['readonly', 'filename
   noremap <C-p> gt
   noremap <C-n> gT
   imap <C-h>  <BS>
+  "neosnippet.vim
+  imap <C-k> <Plug>(neosnippet_expand_or_jump)
+  smap <C-k> <Plug>(neosnippet_expand_or_jump)
+  "" Display lines up/down (consecutive motions are quicker)
+  nnoremap j gj
+  nnoremap k gk
+
+  set pastetoggle=<F10> "<F10> is :set paste or :set :set nopaste
 "}}}
 
 
-
-
+"set iskeyword+=:
+"hoge::hogeモジュールとか*で飛べるようになるよ。でも、影響範囲が大きいのでsetlとかしよう。
 
 set secure
-set title
+set title "watch tab
