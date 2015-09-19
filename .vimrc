@@ -1,7 +1,7 @@
 "molokai.vim
 set spell "check spell
 set spelllang=en,cjk  "out japanese with set spell
-let g:rehash256 = 1
+"let g:rehash256 = 1
 
 set mouse=a " enable mouse in all modes
 set incsearch " show matches when typing the search pattern
@@ -11,10 +11,53 @@ set nofixendofline
 set foldmethod=marker "{{{がmarker  zj/zkで移動
 set foldlevel=2
 
+"function! s:get_sid()
+"  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeget_sid$')
+"endfunction
+"let s:sid = s:get_sid()
+"delfunction s:get_sid
+
 " Show invisible characters.
 set list listchars=tab:^\ ,trail:_,extends:>,precedes:<
 "set invlist
 "set list  " show non-normal spaces, tabs etc.
+
+set noshowmatch " 括弧の対応をハイライト
+set shortmess+=I " 起動時のメッセージを表示しない
+"vim diff setting
+set diffopt=vertical
+
+"整形
+command! Format call s:execute_keep_view('call s:format()')
+
+function! s:format()
+  if &filetype ==# 'cs'
+    OmniSharpCodeFormat
+  elseif &filetype ==# 'c'
+    ClangFormat
+  elseif &filetype ==# 'cpp'
+    ClangFormat
+  elseif &filetype ==# 'go'
+    call s:filter_current('goimports %s', 0)
+  elseif &filetype ==# 'javascript' && executable('js-beautify')
+    call s:filter_current('js-beautify %s', 0)
+  elseif &filetype ==# 'xml'
+    let $XMLLINT_INDENT = '    '
+    if !s:filter_current('xmllint --format --encode ' . &encoding . ' %s', 1)
+      execute 'silent! %substitute/>\s*</>\r</g | normal! gg=G'
+    endif
+  elseif &filetype ==# 'json'
+    call s:filter_current('jq . %s', 0)
+  else
+    echomsg 'Format: Not supported:' &filetype
+  endif
+endfunction
+
+function! s:execute_keep_view(expr)
+  let wininfo = winsaveview()
+  execute a:expr
+  call winrestview(wininfo)
+endfunction
 
 "区切り文字に:を追加
 "構文カラー"{{{"}}}
@@ -43,6 +86,7 @@ function! ConvertFileEncode(encoding, ...)
     exec('setl fileformat='.get(a:, 2, 'unix'))
 endfunction
 
+
 command! Utf8      call ConvertFileEncode('utf-8')
 command! Cp932     call ConvertFileEncode('cp932')
 command! Sjis      Cp932
@@ -51,6 +95,9 @@ command! Utf16l    call ConvertFileEncode('utf-16le')
 command! Iso2022jp call ConvertFileEncode('iso-2022-jp')
 command! Jis       Iso2022jp
 command! Eucjp     call ConvertFileEncode('euc-jp')
+
+"ref pugin
+let g:ref_refe_cmd = $HOME.'/.rbenv/shims/refe' "refeコマンドのパス URL:http://qiita.com/masa2sei/items/85a2c2cc3721c79a5322
 
 "クラッシュした時に大丈夫なように
 if has('unix')
@@ -150,15 +197,36 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 
 filetype plugin indent on " Required!
 
+" guioptions {{{
+" メニューを読み込まない
+set guioptions+=M
 
+" ツールバー削除
+set guioptions-=T
+
+" メニューバー削除
+set guioptions-=m
+
+" スクロールバー削除
+set guioptions-=r
+set guioptions-=l
+set guioptions-=R
+set guioptions-=L
+
+" テキストベースタブ
+set guioptions-=e
+" }}}
+
+call neobundle#load_cache()  " キャッシュの読込み
+NeoBundleFetch 'Shougo/neobundle.vim'
 
 "-----------------------------------------------------------------------------
 "Instaled NeoBundle Plugin {{{
+NeoBundle 'vim-jp/vim-go-extra' "https://github.com/vim-jp/vim-go-extra
 NeoBundle 'rking/ag.vim'
 NeoBundle 'mattn/webapi-vim'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'h1mesuke/unite-outline'
-NeoBundle 'basyura/bitly.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tmhedberg/matchit'
@@ -167,7 +235,7 @@ NeoBundle 'mbbill/undotree'
 "NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'supermomonga/shaberu.vim'
-NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-surround' "extends pagin text-object   URL:http://vimblog.hatenablog.com/entry/vim_plugin_surround_vim
 NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'plasticboy/vim-markdown'
 NeoBundle 'kannokanno/previm'
@@ -183,13 +251,13 @@ NeoBundle 'agatan/vim-vlack'
 NeoBundle 'mattn/vim-metarw-redmine'
 NeoBundle 'kana/vim-metarw'
 NeoBundle 'kazuminn/gunosy.vim'
-NeoBundle 'haya14busa/incsearch-fuzzy.vim'
-NeoBundle 'haya14busa/incsearch.vim'
-NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'haya14busa/incsearch-fuzzy.vim' "search.
+NeoBundle 'haya14busa/incsearch.vim' "search.
+NeoBundle 'itchyny/lightline.vim'  "statusline hightlight URL:https://github.com/itchyny/lightline.vim
+NeoBundle 'Lokaltog/vim-easymotion' "爆速カーソル移動　URL:http://haya14busa.com/mastering-vim-easymotion/
 NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'sjl/gundo.vim'
-NeoBundle 'mattn/gist-vim'
+NeoBundle 'sjl/gundo.vim' "watch undo tree
+NeoBundle 'mattn/gist-vim' "gist　楽ニー
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet-snippets'
@@ -229,6 +297,7 @@ NeoBundle 'Shougo/vimshell.vim',{
 \ }
 " }}}
 
+NeoBundleSaveCache  " キャッシュの書込み
 
 " ------------------------------------------------------------------------------------
 "  NeoBundle setting{{{
@@ -322,6 +391,7 @@ let g:neosnippet#snippets_directory = s:my_snippet
 "}}}
 
 "
+call neobundle#end()
 
 "-----------------------------------------------------------------------------
 "maping{{{
@@ -337,7 +407,8 @@ let g:neosnippet#snippets_directory = s:my_snippet
   nnoremap sn <C-w>n
 
   map <C-g> :Gtags
-  map <C-h> :Gtags -f %<CR> "関数表示
+  "関数表示
+  map <C-h> :Gtags -f %<CR>
   map <C-j> :GtagsCursor<CR> "自動的にその関数が定義されている箇所（別ファイルであっても）に移動してくれます。
   map <C-n> :cn<CR>
   map <C-e> :cp<CR>
@@ -348,10 +419,13 @@ let g:neosnippet#snippets_directory = s:my_snippet
   imap <C-k> <Plug>(neosnippet_expand_or_jump)
   smap <C-k> <Plug>(neosnippet_expand_or_jump)
   "" Display lines up/down (consecutive motions are quicker)
+  "wrapされた行でも真下に移動できる
   nnoremap j gj
   nnoremap k gk
 
   set pastetoggle=<F10> "<F10> is :set paste or :set :set nopaste
+  nmap s <Plug>(easymotion-s2)
+  "easy-motion.use s{char}{char}{label}. URL http://haya14busa.com/mastering-vim-easymotion/
 "}}}
 
 
@@ -359,4 +433,4 @@ let g:neosnippet#snippets_directory = s:my_snippet
 "hoge::hogeモジュールとか*で飛べるようになるよ。でも、影響範囲が大きいのでsetlとかしよう。
 
 set secure
-set title "watch tab
+set title
