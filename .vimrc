@@ -260,6 +260,34 @@ if neobundle#load_cache()
     NeoBundle 'Shougo/neocomplcache'
     NeoBundle 'Shougo/neosnippet-snippets'
     NeoBundleSaveCache
+
+    NeoBundleLazy 'Shougo/vimproc.vim', {
+    \ 'build' : {
+    \     'windows' : 'tools\\update-dll-mingw',
+    \     'cygwin' : 'make -f make_cygwin.mak',
+    \     'mac' : 'make -f make_mac.mak',
+    \     'linux' : 'make',
+    \     'unix' : 'gmake',
+    \    },
+    \ }
+
+    NeoBundleLazy 'vim-scripts/TwitVim',{
+    \ 'autoload' : {
+    \     'commands' : [ "FriendsTwitter","RepliesTwitter","PosttoTwitter" ]
+    \    },
+    \ }
+
+    NeoBundleLazy 'thinca/vim-quickrun',{
+    \ 'autoload' : {
+    \     'commands' : [ "QuickRun" ]
+    \    },
+    \ }
+
+    NeoBundle 'Shougo/vimshell.vim',{
+    \ 'autoload' : {
+    \     'commands' : [ "VimShell" ]
+    \    },
+    \ }
 endif
 
 
@@ -268,36 +296,8 @@ endif
 
 
 
-NeoBundleLazy 'Shougo/vimproc.vim', {
-\ 'build' : {
-\     'windows' : 'tools\\update-dll-mingw',
-\     'cygwin' : 'make -f make_cygwin.mak',
-\     'mac' : 'make -f make_mac.mak',
-\     'linux' : 'make',
-\     'unix' : 'gmake',
-\    },
-\ }
-
-NeoBundleLazy 'vim-scripts/TwitVim',{
-\ 'autoload' : {
-\     'commands' : [ "FriendsTwitter","RepliesTwitter","PosttoTwitter" ]
-\    },
-\ }
-
-NeoBundleLazy 'thinca/vim-quickrun',{
-\ 'autoload' : {
-\     'commands' : [ "QuickRun" ]
-\    },
-\ }
-
-NeoBundle 'Shougo/vimshell.vim',{
-\ 'autoload' : {
-\     'commands' : [ "VimShell" ]
-\    },
-\ }
 " }}}
 
-NeoBundleSaveCache  " キャッシュの書込み
 
 " ------------------------------------------------------------------------------------
 "  NeoBundle setting{{{
