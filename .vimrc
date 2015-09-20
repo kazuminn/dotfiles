@@ -1,7 +1,6 @@
 "molokai.vim
 set spell "check spell
 set spelllang=en,cjk  "out japanese with set spell
-"let g:rehash256 = 1
 
 set mouse=a " enable mouse in all modes
 set incsearch " show matches when typing the search pattern
@@ -171,8 +170,6 @@ au BufRead,BufNewFile *.md set filetype=markdown
 
 
 "なんだろこれ
-set nocompatible
-filetype plugin indent on
 
 "NeoBundle 'neocompoete' setting
 let g:neocomplete#enable_at_startup = 1
@@ -193,9 +190,8 @@ if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-call neobundle#rc(expand('~/.vim/bundle/'))
+call neobundle#begin(expand('~/.vim/bundle/'))
 
-filetype plugin indent on " Required!
 
 " guioptions {{{
 " メニューを読み込まない
@@ -222,45 +218,49 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 "-----------------------------------------------------------------------------
 "Instaled NeoBundle Plugin {{{
-NeoBundle 'vim-jp/vim-go-extra' "https://github.com/vim-jp/vim-go-extra
-NeoBundle 'rking/ag.vim'
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'h1mesuke/unite-outline'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tmhedberg/matchit'
-NeoBundle 'Yggdroot/indentLine'
-NeoBundle 'mbbill/undotree'
-"NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'supermomonga/shaberu.vim'
-NeoBundle 'tpope/vim-surround' "extends pagin text-object   URL:http://vimblog.hatenablog.com/entry/vim_plugin_surround_vim
-NeoBundle 'terryma/vim-multiple-cursors'
-NeoBundle 'plasticboy/vim-markdown'
-NeoBundle 'kannokanno/previm'
-NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'ebc-2in2crc/vim-ref-jvmis'
-NeoBundle 'pekepeke/ref-javadoc'
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'vitalk/vim-simple-todo'
-NeoBundle 'vim-scripts/gtags.vim'
-NeoBundle 'kazuminn/latex_template.vim'
-NeoBundle 'agatan/vim-vlack'
-NeoBundle 'mattn/vim-metarw-redmine'
-NeoBundle 'kana/vim-metarw'
-NeoBundle 'kazuminn/gunosy.vim'
-NeoBundle 'haya14busa/incsearch-fuzzy.vim' "search.
-NeoBundle 'haya14busa/incsearch.vim' "search.
-NeoBundle 'itchyny/lightline.vim'  "statusline hightlight URL:https://github.com/itchyny/lightline.vim
-NeoBundle 'Lokaltog/vim-easymotion' "爆速カーソル移動　URL:http://haya14busa.com/mastering-vim-easymotion/
-NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'sjl/gundo.vim' "watch undo tree
-NeoBundle 'mattn/gist-vim' "gist　楽ニー
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/neosnippet-snippets'
+if neobundle#load_cache()
+    NeoBundle 'Shougo/neobundle.vim'
+    NeoBundle 'vim-jp/vim-go-extra' "https://github.com/vim-jp/vim-go-extra
+    NeoBundle 'rking/ag.vim'
+    NeoBundle 'mattn/webapi-vim'
+    NeoBundle 'tyru/open-browser.vim'
+    NeoBundle 'h1mesuke/unite-outline'
+    NeoBundle 'Shougo/unite.vim'
+    NeoBundle 'tpope/vim-fugitive'
+    NeoBundle 'tmhedberg/matchit'
+    NeoBundle 'Yggdroot/indentLine'
+    NeoBundle 'mbbill/undotree'
+    "NeoBundle 'scrooloose/nerdtree'
+    NeoBundle 'Shougo/neocomplete.vim'
+    NeoBundle 'supermomonga/shaberu.vim'
+    NeoBundle 'tpope/vim-surround' "extends pagin text-object   URL:http://vimblog.hatenablog.com/entry/vim_plugin_surround_vim
+    NeoBundle 'terryma/vim-multiple-cursors'
+    NeoBundle 'plasticboy/vim-markdown'
+    NeoBundle 'kannokanno/previm'
+    NeoBundle 'tyru/open-browser.vim'
+    NeoBundle 'thinca/vim-ref'
+    NeoBundle 'ebc-2in2crc/vim-ref-jvmis'
+    NeoBundle 'pekepeke/ref-javadoc'
+    NeoBundle 'mattn/webapi-vim'
+    NeoBundle 'vitalk/vim-simple-todo'
+    NeoBundle 'vim-scripts/gtags.vim'
+    NeoBundle 'kazuminn/latex_template.vim'
+    NeoBundle 'agatan/vim-vlack'
+    NeoBundle 'mattn/vim-metarw-redmine'
+    NeoBundle 'kana/vim-metarw'
+    NeoBundle 'kazuminn/gunosy.vim'
+    NeoBundle 'haya14busa/incsearch-fuzzy.vim' "search.
+    NeoBundle 'haya14busa/incsearch.vim' "search.
+    NeoBundle 'itchyny/lightline.vim'  "statusline hightlight URL:https://github.com/itchyny/lightline.vim
+    NeoBundle 'Lokaltog/vim-easymotion' "爆速カーソル移動　URL:http://haya14busa.com/mastering-vim-easymotion/
+    NeoBundle 'bronson/vim-trailing-whitespace'
+    NeoBundle 'sjl/gundo.vim' "watch undo tree
+    NeoBundle 'mattn/gist-vim' "gist　楽ニー
+    NeoBundle 'Shougo/neosnippet.vim'
+    NeoBundle 'Shougo/neocomplcache'
+    NeoBundle 'Shougo/neosnippet-snippets'
+    NeoBundleSaveCache
+endif
 
 
 
@@ -392,6 +392,7 @@ let g:neosnippet#snippets_directory = s:my_snippet
 
 "
 call neobundle#end()
+filetype plugin indent on " Required!
 
 "-----------------------------------------------------------------------------
 "maping{{{
