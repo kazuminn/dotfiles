@@ -1,8 +1,72 @@
+"|:history|によって出力される{num}番目のエントリを、再度実行するための ":H {num}" というコマンドを定義する
+:command -nargs=1 H execute histget("cmd",0+<args>)
+
+"http://takesy.cocolog-nifty.com/atico/2009/07/vimhtmlrubydo-e.html
+source $VIMRUNTIME/macros/matchit.vim
+
+"highway http://qiita.com/8398a7/items/021e5369ce2d7c269fe0
+nnoremap <silent> ,g  :<C-u>Unite grep:./ -buffer-name=search-buffer<CR>
+
+" unite grepにhw(highway)を使う
+"if executable('hw')
+"  let g:unite_source_grep_command = 'hw'
+"  let g:unite_source_grep_default_opts = '--no-group --no-color'
+"  let g:unite_source_grep_recursive_opt = ''
+"endif
+
+" unite setting
+let s:default_highlight = {
+      \ 'comment' : 'Comment',
+      \ 'expanded': 'Constant',
+      \ 'function': 'Function',
+      \ 'id'      : 'Special',
+      \ 'macro'   : 'Macro',
+      \ 'method'  : 'Function',
+      \ 'normal'  : 'Normal',
+      \ 'package' : 'Normal',
+      \ 'special' : 'Macro',
+      \ 'type'    : 'Type',
+      \ 'level_1' : 'Type',
+      \ 'level_2' : 'PreProc',
+      \ 'level_3' : 'Identifier',
+      \ 'level_4' : 'Constant',
+      \ 'level_5' : 'Special',
+      \ 'level_6' : 'Normal',
+      \ 'parameter_list': 'Normal',
+      \ }
+
+"line highlight
+set cursorline
+"
+"highlight CursorLine cterm=NONE ctermfg=white ctermbg=gray
+
+"clump
+if exists('+clpum')
+    set clpum
+    set clpumheight=40
+    set clcompleteopt+=noinsert
+    set clcompletefunc=UserDefinedClComplete
+    function! UserDefinedClComplete(findstart, base)
+        if a:findstart
+            return 0
+        else
+            return [
+            \   { 'word': 'Jan', 'menu': 'January' },
+            \   { 'word': 'Feb', 'menu': 'February' },
+            \   { 'word': 'Mar', 'menu': 'March' },
+            \   { 'word': 'Apr', 'menu': 'April' },
+            \   { 'word': 'May', 'menu': 'May' },
+            \ ]
+        endif
+    endfunc
+endif
+
+"byte beartail
+let g:path_to_local_directory = "~/Desktop/byte/BearTail/account-aggregation/ruby/drwallet-html"
 "molokai.vim
 set spell "check spell
 set spelllang=en,cjk  "out japanese with set spell
 
-set mouse=a " enable mouse in all modes
 set incsearch " show matches when typing the search pattern
 
 set nofixendofline
@@ -25,6 +89,10 @@ set noshowmatch " 括弧の対応をハイライト
 set shortmess+=I " 起動時のメッセージを表示しない
 "vim diff setting
 set diffopt=vertical
+
+
+
+
 
 "整形
 command! Format call s:execute_keep_view('call s:format()')
@@ -64,8 +132,8 @@ syntax enable
 
 "undotree setting
 if has('persistent_undo')
-let &undodir = expand('~/.vim/undo_history')
-set undofile
+    let &undodir = expand('~/.vim/undo_history')
+    set undofile
 endif
 
 "よくわかんないけどtermialとのconnectionが早くなる
@@ -213,12 +281,16 @@ set guioptions-=L
 set guioptions-=e
 " }}}
 
-call neobundle#load_cache()  " キャッシュの読込み
-NeoBundleFetch 'Shougo/neobundle.vim'
 
 "-----------------------------------------------------------------------------
 "Instaled NeoBundle Plugin {{{
+NeoBundleFetch 'Shougo/neobundle.vim'
+
 if neobundle#load_cache()
+    NeoBundle "mattn/ctrlp-hotentry"
+    NeoBundle "mattn/ctrlp-google"
+    NeoBundle "sophacles/vim-processing"
+    NeoBundle 'fholgado/minibufexpl.vim'
     NeoBundle 'Shougo/neobundle.vim'
     NeoBundle 'vim-jp/vim-go-extra' "https://github.com/vim-jp/vim-go-extra
     NeoBundle 'rking/ag.vim'
@@ -259,7 +331,6 @@ if neobundle#load_cache()
     NeoBundle 'Shougo/neosnippet.vim'
     NeoBundle 'Shougo/neocomplcache'
     NeoBundle 'Shougo/neosnippet-snippets'
-    NeoBundleSaveCache
 
     NeoBundleLazy 'Shougo/vimproc.vim', {
     \ 'build' : {
@@ -273,7 +344,7 @@ if neobundle#load_cache()
 
     NeoBundleLazy 'vim-scripts/TwitVim',{
     \ 'autoload' : {
-    \     'commands' : [ "FriendsTwitter","RepliesTwitter","PosttoTwitter" ]
+    \     'commands' : [ "RepliesTwitter","FriendsTwitter","RepliesTwitter","PosttoTwitter" ]
     \    },
     \ }
 
@@ -290,12 +361,10 @@ if neobundle#load_cache()
     \ }
 endif
 
+    NeoBundleSaveCache
 
-
-
-
-
-
+call neobundle#end()
+filetype plugin indent on " Required!
 " }}}
 
 
@@ -347,11 +416,6 @@ set laststatus=2
 "
 "unite
 let g:unite_source_history_yank_enable = 1
-try
-  let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
-  call unite#filters#matcher_default#use(['matcher_fuzzy'])
-catch
-endtry
 " search a file in the filetree
 nnoremap <space><space> :<C-u>Unite -start-insert file_rec/async<cr>
 " reset not it is <C-l> normally
@@ -388,14 +452,18 @@ let g:neocomplete#enable_at_startup = 1
 let s:my_snippet = '~/dotfiles/snippet/'
 let g:neosnippet#snippets_directory = s:my_snippet
 
+"minibufexpl.vim setting
+let g:miniBufExplMapWindowNavVim = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBuffs = 1
 "}}}
 
 "
-call neobundle#end()
-filetype plugin indent on " Required!
 
 "-----------------------------------------------------------------------------
 "maping{{{
+  nnoremap <space>h :<C-u>bn<cr>
+  nnoremap <space>l :<C-u>bp<cr>
   nnoremap q :QuickRun<cr> "qでquickrun
 
   nmap gz <Plug>(openbrowser-smart-search) "url上でgxを押すとブラウザで展開
@@ -423,10 +491,12 @@ filetype plugin indent on " Required!
   "wrapされた行でも真下に移動できる
   nnoremap j gj
   nnoremap k gk
+  map <silent> t :tablast <bar> tabnew<CR> "http://qiita.com/wadako111/items/755e753677dd72d8036d
 
   set pastetoggle=<F10> "<F10> is :set paste or :set :set nopaste
   nmap s <Plug>(easymotion-s2)
   "easy-motion.use s{char}{char}{label}. URL http://haya14busa.com/mastering-vim-easymotion/
+  vnoremap <C-K> y:new\<CR>P\<C-w>pgv "選択したものを別windowに表示
 "}}}
 
 
